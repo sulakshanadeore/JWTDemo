@@ -1,0 +1,29 @@
+﻿CREATE FUNCTION [dbo].ValidateUser
+(
+	@p_username varchar(50),
+	@p_password varchar(50)
+	)
+RETURNS INT
+AS
+BEGIN
+declare
+@v_name varchar(50),
+@v_pwd varchar(50),
+@ans int=0
+
+select @v_name=username,@v_pwd=password from Users
+where username=@p_username;
+
+if ((len(@v_name)!=0) AND (len(@v_pwd)!=0))
+begin
+if ((@v_name=@p_username) AND(@v_pwd=@p_password))
+begin
+set @ans=1;
+end;
+end;
+else
+begin
+set @ans=2;
+end;
+return @ans;
+end;
